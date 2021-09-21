@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Networks\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)Networks\vendor\OpenSSL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -154,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Networks\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)Networks\vendor\OpenSSL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -174,11 +174,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Requests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Networks\Networks.vcxproj">
       <Project>{e3c5b070-57f3-4e11-9701-fdcc108aecb3}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\Requests.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="settings.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
