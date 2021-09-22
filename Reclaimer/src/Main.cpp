@@ -11,18 +11,14 @@
 #include "Constants.h"
 #include "Requests.h"
 
-#include <Windows.h>
-
 #pragma comment (lib, "Networks.lib")
 
 using namespace std;
 
-void extractZip(const json::JSONParser& settings);
+void extractZip(const json::JSONParser& settings, const string& assetName);
 
 int main(int argc, char** argv)
 {
-	SetConsoleOutputCP(1251);
-
 	if (!filesystem::exists(configuration::settings))
 	{
 		cout << format(R"(Can't find "{}")"sv, configuration::settings) << endl;
@@ -71,6 +67,7 @@ int main(int argc, char** argv)
 			for (size_t i = 0; i < assets.size(); i++)
 			{
 				auto& asset = get<json::utility::objectSmartPointer<json::utility::jsonObject>>(assets.getObject(i)->data.front().second);
+				const string& assetName = asset->getString("name");
 
 				stream << requests::getLoadUrl(asset->getString("url"));
 
@@ -80,23 +77,27 @@ int main(int argc, char** argv)
 
 				if (parser.getResponseCode() == web::ResponseCodes::ok)
 				{
-					cout << "Loading..." << endl;
+					cout << format(R"(Start loading "{}")"sv, assetName) << endl;
 
-					ofstream(filesystem::path(settings.getString("outputPath")) /= "LostConnection.zip", ios::binary) << parser.getBody();
+					ofstream(filesystem::path(settings.getString("outputPath")) /= assetName, ios::binary) << parser.getBody();
 
-					extractZip(settings);
+					extractZip(settings, assetName);
+
+					cout << format(R"(Finish loading "{}")"sv, assetName) << endl;
 				}
 				else if (parser.getResponseCode() == web::ResponseCodes::found)
 				{
-					cout << "Loading..." << endl;
+					cout << format(R"(Start loading "{}")"sv, assetName) << endl;
 
-					ofstream(filesystem::path(settings.getString("outputPath")) /= "LostConnection.zip", ios::binary) << requests::getAsset(parser);
+					ofstream(filesystem::path(settings.getString("outputPath")) /= assetName, ios::binary) << requests::getAsset(parser);
 
-					extractZip(settings);
+					extractZip(settings, assetName);
+
+					cout << format(R"(Finish loading "{}")"sv, assetName) << endl;
 				}
 				else
 				{
-					cout << parser.getResponseMessage() << endl;
+					cout << format(R"(Failed to load {})"sv, assetName) << endl;
 				}
 			}
 		}
@@ -110,22 +111,25 @@ int main(int argc, char** argv)
 		cout << e.what() << endl;
 	}
 
-	cout << "End loading" << endl;
-
 	return 0;
 }
 
-void extractZip(const json::JSONParser& settings)
+void extractZip(const json::JSONParser& settings, const string& assetName)
 {
+	if (assetName.find(".zip") == string::npos)
+	{
+		return;
+	}
+
 	filesystem::path outputPath = settings.getString("outputPath");
 
-	system(format(R"(powershell.exe Expand-Archive -Path "{}" -DestinationPath "{}")", (outputPath / "LostConnection.zip").string(), outputPath.string()).data());
+	system(format(R"(powershell.exe Expand-Archive -Path "{}" -DestinationPath "{}")", (outputPath / assetName).string(), outputPath.string()).data());
 
 	try
 	{
 		if (settings.getBool("removeAfterExtract"))
 		{
-			filesystem::remove(outputPath / "LostConnection.zip");
+			filesystem::remove(outputPath / assetName);
 		}
 	}
 	catch (const json::exceptions::CantFindValueException&)
