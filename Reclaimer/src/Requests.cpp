@@ -30,8 +30,11 @@ namespace requests
 
 	string getAsset(const web::HTTPParser& parser)
 	{
+		static constexpr string_view https = "https://";
+		static constexpr string_view com = ".com";
+
 		const string& location = parser.getHeaders().at("Location");
-		string host = string(location.begin() + location.find("github"), location.begin() + location.find(".com") + 4);
+		string host = string(location.begin() + location.find(https) + https.size(), location.begin() + location.find(com) + com.size());
 		streams::IOSocketStream stream(make_unique<buffers::IOSocketBuffer>(make_unique<web::HTTPSNetwork>(host, "443")));
 		string response;
 

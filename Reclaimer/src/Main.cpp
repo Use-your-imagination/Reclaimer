@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 
 	try
 	{
-		json::JSONParser settings = ifstream(configuration::settings);
+		json::JSONParser settings = ifstream(configuration::settings.data());
 
 		if (!filesystem::exists(settings.getString("outputPath")))
 		{
