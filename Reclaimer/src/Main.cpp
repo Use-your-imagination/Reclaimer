@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 
 #include "BaseIOSocketStream.h"
@@ -44,7 +45,7 @@ int main(int argc, char** argv)
 
 		web::HTTPParser repositoryHTTP(response);
 
-		if (repositoryHTTP.getResponseCode() == web::ResponseCodes::ok)
+		if (repositoryHTTP.getResponseCode() == web::responseCodes::ok)
 		{
 			json::JSONParser repositoryJSON(repositoryHTTP.getBody());
 			json::utility::JSONArrayWrapper assets(repositoryJSON.getArray("assets"));
@@ -66,16 +67,16 @@ int main(int argc, char** argv)
 
 			for (size_t i = 0; i < assets.size(); i++)
 			{
-				auto& asset = get<json::utility::objectSmartPointer<json::utility::jsonObject>>(assets.getObject(i)->data.front().second);
-				const string& assetName = asset->getString("name");
+				auto& asset = get<json::utility::jsonObject>(assets.getObject(i).data.front().second);
+				const string& assetName = asset.getString("name");
 
-				stream << requests::getLoadUrl(asset->getString("url"));
+				stream << requests::getLoadUrl(asset.getString("url"));
 
 				stream >> response;
 
 				web::HTTPParser parser(response);
 
-				if (parser.getResponseCode() == web::ResponseCodes::ok)
+				if (parser.getResponseCode() == web::responseCodes::ok)
 				{
 					cout << format(R"(Start loading "{}")"sv, assetName) << endl;
 
@@ -85,7 +86,7 @@ int main(int argc, char** argv)
 
 					cout << format(R"(Finish loading "{}")"sv, assetName) << endl;
 				}
-				else if (parser.getResponseCode() == web::ResponseCodes::found)
+				else if (parser.getResponseCode() == web::responseCodes::found)
 				{
 					cout << format(R"(Start loading "{}")"sv, assetName) << endl;
 

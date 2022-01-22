@@ -50,7 +50,3 @@ namespace requests
 		return web::HTTPParser(response).getBody();
 	}
 }
-
-/*
-https://github-releases.githubusercontent.com/379357672/7c186396-6045-4b6a-926d-3471efafaa44?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210921%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210921T210417Z&X-Amz-Expires=300&X-Amz-Signature=a8357f709b8548f7bd76eb29e2d8da3a9b7844a775a7a20bb932dc80e72d8543&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=379357672&response-content-disposition=attachment%3B%20filename%3DLostConnection.rar&response-content-type=application%2Foctet-stream
-*/
