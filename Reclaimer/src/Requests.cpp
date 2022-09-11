@@ -4,6 +4,8 @@
 #include "BaseIOSocketStream.h"
 #include "HTTPSNetwork.h"
 
+#include "Constants.h"
+
 using namespace std;
 
 namespace requests
@@ -14,6 +16,7 @@ namespace requests
 		(
 			"Host", "api.github.com",
 			"User-Agent", "Reclaimer",
+			"Authorization", "token " + jsonSettings->getString("token"),
 			"Accept", "application/vnd.github.v3+json"
 		).build();
 	}
@@ -24,6 +27,7 @@ namespace requests
 		(
 			"Host", "api.github.com",
 			"User-Agent", "Reclaimer",
+			"Authorization", "token " + jsonSettings->getString("token"),
 			"Accept", "application/octet-stream"
 		).build();
 	}
@@ -42,6 +46,7 @@ namespace requests
 		(
 			"Host", host,
 			"User-Agent", "Reclaimer",
+			"Authorization", "token " + jsonSettings->getString("token"),
 			"Accept", "application/octet-stream"
 		).build();
 

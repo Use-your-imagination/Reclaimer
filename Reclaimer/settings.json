@@ -1,4 +1,5 @@
 {
   "removeAfterExtract": true,
-  "outputPath": "PathToOutputFolder"
+  "outputPath": "PathToOutputFolder",
+  "token": "your token here"
 }

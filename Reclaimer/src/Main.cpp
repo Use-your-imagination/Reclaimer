@@ -31,6 +31,8 @@ int main(int argc, char** argv)
 	{
 		json::JSONParser settings = ifstream(configuration::settings.data());
 
+		jsonSettings = &settings;
+
 		if (!filesystem::exists(settings.getString("outputPath")))
 		{
 			filesystem::create_directories(settings.getString("outputPath"));
